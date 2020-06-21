@@ -1,0 +1,22 @@
+dist: trusty
+
+os: linux
+
+services:
+  - docker
+
+language: go
+
+env:
+  jobs:
+    - DB_VERSION=mysql:5.5
+    - DB_VERSION=mysql:5.6
+
+before_install:
+  - go get github.com/rainingmaster/mysql
+  - go get github.com/go-sql-driver/mysql
+
+script:
+  - sudo service mysql stop
+  - ./.travis/initializedb.sh
+  - go test -v ./...
